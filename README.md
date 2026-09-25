@@ -1,52 +1,61 @@
 # WiseVault – C++ Banking Management System
 
-WiseVault is a **console-based Banking Management System** developed in **C++** using **Object-Oriented Programming (OOP)** and **file handling** concepts.  
-The project simulates core banking operations such as account management, deposits, withdrawals, loan payments, and transaction history tracking.
+WiseVault is a **console-based Banking Management System** developed in **C++17** using **Object-Oriented Programming (OOP)**, **inheritance & polymorphism**, **file handling**, and **security-first** design principles.
+
+The project simulates core banking operations including account management, deposits, withdrawals, inter-account transfers, loan management, interest accrual, and transaction history tracking — all with persistent file storage.
 
 ---
 
 ## 🚀 Features
 
 ### 🔐 User Account Management
-- Create new bank accounts  
-- Secure storage of user credentials  
-- Persistent data storage using files  
+- Secure user registration and login
+- **Password hashing** with salted SHA-256 (no plaintext passwords)
+- **Hidden password input** (masked with `*` in terminal)
+- Role-based access control (User / Manager)
 
 ### 💰 Banking Operations
-- Deposit money  
-- Withdraw money  
-- Check account balance  
+- Deposit and withdraw money
+- **Inter-account fund transfers** with balance validation
+- **Minimum balance enforcement** (₹1,000 for Savings, ₹5,000 for Current)
+- **Overdraft facility** for Current accounts
 
 ### 🏦 Loan Management
-- Apply for loans  
-- Pay loan installments  
-- Track loan details  
+- Apply for loans with EMI calculation
+- Make loan installment payments
+- Track loan details and remaining balance
+- Manager can apply loans on behalf of users
 
 ### 📜 Transaction History
-- Logs all transactions including:
-  - Deposits  
-  - Withdrawals  
-  - Loan payments  
-- Unified transaction history per account  
+- Comprehensive transaction logging with timestamps
+- Color-coded transaction display (green for credits, red for debits)
+- **Export account statements** to formatted text files
 
-### 💾 File Handling
-- Stores:
-  - Account details  
-  - Transaction records  
-  - Loan information  
-- Ensures data persistence across program executions  
+### 💾 Full Data Persistence
+- All data persists across program restarts:
+  - `data/users.txt` — User credentials (hashed)
+  - `data/accounts.txt` — Account details and balances
+  - `data/loans.txt` — Loan records
+  - `data/transactions.txt` — Complete transaction history
+
+### 🎨 Terminal UI
+- ANSI color output (Green/Red/Cyan/Yellow)
+- Box-drawing characters for clean receipts and displays
+- ASCII art branding
 
 ---
 
 ## 🛠️ Technologies Used
 
-- **Language:** C++  
-- **Programming Paradigm:** Object-Oriented Programming (OOP)  
+- **Language:** C++17
+- **Paradigm:** Object-Oriented Programming with Inheritance & Polymorphism
 - **Core Concepts:**
-  - Classes and Objects  
-  - Encapsulation  
-  - File I/O (`fstream`)  
-  - Conditional logic and loops  
+  - Abstract base classes and virtual methods
+  - Smart pointers (`std::unique_ptr`)
+  - Salted SHA-256 password hashing
+  - POSIX `termios` for hidden input
+  - Clean input validation (no `cin` desync)
+  - Loop-based menus (no stack overflow from recursion)
 
 ---
 
@@ -54,15 +63,25 @@ The project simulates core banking operations such as account management, deposi
 
 ```
 WiseVault/
-│
-├── WiseVault.cpp        # Main source file
-├── accounts.txt         # Stores account details
-├── transactions.txt     # Stores transaction history
-├── loans.txt            # Stores loan-related data
-└── README.md            # Project documentation
+├── include/
+│   ├── Account.hpp          # Abstract Account + SavingsAccount + CurrentAccount
+│   ├── BankManager.hpp      # Central banking operations & file persistence
+│   ├── Loan.hpp             # Loan management with EMI calculation
+│   ├── Menu.hpp             # UI menus (loop-based, no recursion)
+│   ├── TransactionRecord.hpp # Transaction logging with timestamps
+│   ├── User.hpp             # User auth with password hashing
+│   └── Utils.hpp            # Colors, input helpers, SHA-256, box-drawing
+├── src/
+│   └── main.cpp             # Entry point
+├── data/
+│   ├── users.txt            # User credentials (auto-created)
+│   ├── accounts.txt         # Account data (auto-created)
+│   ├── loans.txt            # Loan records (auto-created)
+│   └── transactions.txt     # Transaction log (auto-created)
+├── CMakeLists.txt           # CMake build configuration
+├── Makefile                 # GNU Make build configuration
+└── README.md                # This file
 ```
-
-*(File names may vary based on implementation)*
 
 ---
 
@@ -78,42 +97,59 @@ WiseVault/
    cd WiseVault
    ```
 
-3. Compile the program:
+3. Build and run:
    ```bash
-   g++ WiseVault.cpp -o WiseVault
-   ```
+   # Using Make
+   make run
 
-4. Run the executable:
-   ```bash
+   # Or manually
+   g++ -std=c++17 -Wall -Wextra -Iinclude src/main.cpp -o WiseVault -lm
    ./WiseVault
    ```
+
+### Default Manager Login
+- **Username:** `Prithvi`
+- **Password:** `admin123`
+
+---
+
+## 🏛️ Architecture Highlights
+
+### Account Hierarchy (Polymorphism)
+```
+Account (abstract)
+├── SavingsAccount
+│   ├── Interest rate: 4% p.a.
+│   ├── Min balance: ₹1,000
+│   └── Interest accrual feature
+└── CurrentAccount
+    ├── Overdraft limit: ₹10,000
+    ├── Min balance: ₹5,000
+    └── No interest
+```
+
+### Security
+- Passwords are salted and hashed with SHA-256 before storage
+- Password input is masked in the terminal
+- Role-based authorization prevents users from accessing manager functions
 
 ---
 
 ## 🎯 Use Case
 
 This project is suitable for:
-- Learning **Object-Oriented Programming in C++**
-- Understanding **file handling and data persistence**
-- Academic mini-projects or semester projects
+- Learning **Object-Oriented Programming in C++17**
+- Understanding **inheritance, polymorphism, and design patterns**
+- Demonstrating **file handling and data persistence**
+- Academic projects requiring **security-aware design**
 - Demonstrating backend logic and system design skills
-
----
-
-## 🔮 Future Enhancements
-
-- Password encryption  
-- Admin panel  
-- Interest calculation on loans  
-- Enhanced menu-driven UI  
-- Database integration (MySQL / SQLite)  
 
 ---
 
 ## 👤 Author
 
-**Prithvi Mujumdar**  
-Computer Science & Engineering Student  
+**Prithvi Mujumdar**
+Computer Science & Engineering Student
 
 ---
 

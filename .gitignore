@@ -1,0 +1,33 @@
+# ─── Compiled Binaries ───
+WiseVault
+WiseVault_v2
+*.o
+*.out
+*.exe
+
+# ─── Build Directories ───
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# ─── Data Files (generated at runtime) ───
+data/users.txt
+data/accounts.txt
+data/loans.txt
+data/transactions.txt
+data/statement_*.txt
+users.txt
+
+# ─── IDE / Editor ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── OS ───
+*.log
